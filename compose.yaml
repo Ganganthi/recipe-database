@@ -1,16 +1,50 @@
 ---
 services:
-  server:
+  # server:
+  #   build:
+  #     dockerfile: Dockerfile
+  #     context: .
+  #   ports:
+  #     - "8080:8080"
+  #   env_file: db.env
+  #   networks:
+  #     - postgres
+  #   develop:
+  #     watch:
+  #       - action: rebuild
+  #         path: .
+  #         files:
+  #           - ./**/*.go
+  #           - ./go.mod
+  #           - ./go.sum
+
+  test-server:
     build:
-      dockerfile: Dockerfile
+      dockerfile: air.Dockerfile
       context: .
     ports:
       - "8080:8080"
-    develop:
-      watch:
-        - action: rebuild
-          path: .
-          files:
-            - ./**/*.go
-            - ./go.mod
-            - ./go.sum
+    env_file: db.env
+    networks:
+      - postgres
+    volumes:
+      - ./:/app
+
+  postgres:
+    image: postgres:16
+    env_file: db.env
+    environment:
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    networks:
+      - postgres
+    ports:
+      - "5432:5432"
+
+networks:
+  postgres:
+    driver: bridge
+
+volumes:
+  postgres:
