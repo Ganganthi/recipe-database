@@ -1,6 +1,6 @@
 module main
 
-go 1.21.1
+go 1.22.5
 
 require (
 	github.com/bytedance/sonic v1.11.6 // indirect
