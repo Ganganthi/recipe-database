@@ -2,11 +2,11 @@ package main
 
 import (
 	"log"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 
 	"main/internal/database"
+	"main/internal/server"
 )
 
 func main() {
@@ -14,11 +14,9 @@ func main() {
 	if err != nil {
 		log.Fatalln("Failed to connect to database")
 	}
-	r := gin.Default()
-	r.GET("/ping", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"message": "pong4",
-		})
-	})
-	r.Run()
+	engine := gin.Default()
+
+	server.AddRoutes(engine)
+
+	engine.Run()
 }
